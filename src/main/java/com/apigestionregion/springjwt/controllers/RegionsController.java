@@ -3,6 +3,7 @@ package com.apigestionregion.springjwt.controllers;
 import com.apigestionregion.springjwt.models.Regions;
 import com.apigestionregion.springjwt.security.services.RegionsService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/regions")
 @AllArgsConstructor
 public class RegionsController {
+
+    @Autowired
     private final RegionsService regionsService;
 
 

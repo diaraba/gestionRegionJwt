@@ -21,7 +21,7 @@ public class PaysServiceImpl implements PaysService{
     }/*C'est  l'implementation de la méthode permettant d'afficher une liste des pays créer*/
 
     @Override
-    public Pays modifier(Long idPays, Pays pays) {/*C'est l'implementation de la méthode permettant de modifier un pays*/
+    public Pays modifier(Long idPays, Pays pays) {//*C'est l'implementation de la méthode permettant de modifier un pays*//*
         return paysRepository.findById(idPays)
                 .map(pays1 -> {
                     pays1.setNom(pays.getNom());

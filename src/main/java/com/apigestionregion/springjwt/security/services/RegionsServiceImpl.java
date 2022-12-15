@@ -3,12 +3,13 @@ package com.apigestionregion.springjwt.security.services;
 import com.apigestionregion.springjwt.models.Regions;
 import com.apigestionregion.springjwt.repository.RegionsRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor/*Permet de créer un constructeur avec argument*/
 @Service/*Permet de spécifier que nos méthdes sont des services*/
 public class RegionsServiceImpl implements RegionsService{
-
+@Autowired
     private final RegionsRepository regionsRepository;
     @Override
     public Regions creer(Regions regions) {
@@ -40,7 +41,7 @@ public class RegionsServiceImpl implements RegionsService{
     }
 
     @Override
-    public Regions modifier(Long idRegions,Regions regions) {/*C'est  l'implementation de la méthode modifier permettant de modifier une region en spécifiant son id*/
+    public Regions modifier(Long idRegions,Regions regions) {//*C'est  l'implementation de la méthode modifier permettant de modifier une region en spécifiant son id*//*
         return regionsRepository.findById(idRegions)
                 .map(regions1 -> {
                     regions1.setNom(regions.getNom());

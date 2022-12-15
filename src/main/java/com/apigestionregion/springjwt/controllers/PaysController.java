@@ -3,6 +3,7 @@ package com.apigestionregion.springjwt.controllers;
 import com.apigestionregion.springjwt.models.Pays;
 import com.apigestionregion.springjwt.security.services.PaysService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ public class PaysController {
 
 
     /* Permet de creer une entrée pour*/
+    @Autowired
     private final PaysService paysService;
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
@@ -43,11 +45,13 @@ public class PaysController {
 
 
     /*Permet de modifier un pays donné*/
+
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{idPays}")
     public Pays update(@PathVariable Long idPays, @RequestBody Pays pays) {
         return paysService.modifier(idPays,pays);
     }
+
 
 
 

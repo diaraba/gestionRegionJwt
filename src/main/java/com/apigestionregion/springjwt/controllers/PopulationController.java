@@ -3,6 +3,7 @@ package com.apigestionregion.springjwt.controllers;
 import com.apigestionregion.springjwt.models.Population;
 import com.apigestionregion.springjwt.security.services.PopulationService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/population")
 @AllArgsConstructor
 public class PopulationController {
+    @Autowired
     private final PopulationService populationService;
 
 
@@ -48,7 +50,7 @@ public class PopulationController {
 
 
     @PreAuthorize("hasRole('ADMIN')")
-    /*lA MISE A JOUR DE LA POPULATION*/
+   // lA MISE A JOUR DE LA POPULATION
     @PutMapping("/update/{idPopulation}")
     public Population update(@PathVariable Long idPopulation, @RequestBody Population population) {
         return populationService.modifier(idPopulation,population);
