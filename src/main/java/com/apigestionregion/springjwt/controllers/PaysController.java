@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
-@RequestMapping("/pays")
+@RequestMapping("api/auth/pays")
 @AllArgsConstructor
 public class PaysController {
 
@@ -20,7 +21,6 @@ public class PaysController {
     /* Permet de creer une entrée pour*/
     @Autowired
     private final PaysService paysService;
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public Pays creer(@RequestBody Pays pays) {
         return paysService.creer(pays);

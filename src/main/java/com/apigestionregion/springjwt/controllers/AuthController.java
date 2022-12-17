@@ -33,7 +33,8 @@ import com.apigestionregion.springjwt.repository.UserRepository;
 import com.apigestionregion.springjwt.security.jwt.JwtUtils;
 import com.apigestionregion.springjwt.security.services.UserDetailsImpl;
 
-@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
