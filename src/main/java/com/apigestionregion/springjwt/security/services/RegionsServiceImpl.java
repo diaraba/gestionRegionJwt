@@ -50,6 +50,7 @@ public class RegionsServiceImpl implements RegionsService{
                     regions1.setSuperficie_regions(regions.getSuperficie_regions());
                     regions1.setDomaine_activite(regions.getDomaine_activite());
                     regions1.setPays(regions.getPays());
+                    regions1.setImage(regions.getImage());
                     //regions1.setPopulation(regions.getPopulation());
                     return regionsRepository.save(regions1);
                 }).orElseThrow(() -> new RuntimeException("Pays non trouvé"));

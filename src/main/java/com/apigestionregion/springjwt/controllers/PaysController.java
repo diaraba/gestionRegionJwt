@@ -1,11 +1,16 @@
 package com.apigestionregion.springjwt.controllers;
 
 import com.apigestionregion.springjwt.models.Pays;
+import com.apigestionregion.springjwt.models.Regions;
 import com.apigestionregion.springjwt.security.services.PaysService;
+import com.apigestionregion.springjwt.security.services.SaveImage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,15 +20,26 @@ import java.util.List;
 @AllArgsConstructor
 public class PaysController {
 
-
-
-
     /* Permet de creer une entrée pour*/
     @Autowired
     private final PaysService paysService;
     @PostMapping("/create")
-    public Pays creer(@RequestBody Pays pays) {
-        return paysService.creer(pays);
+    public Pays creer(@RequestParam(value = "file",required = false) MultipartFile file, @RequestParam(value = "pays") String pays)throws JsonProcessingException {
+
+        Pays pays1=null;
+        try{
+            pays1 = new JsonMapper().readValue(pays,Pays.class);
+        }
+        catch (Exception e){
+            System.out.println("ererh");
+        }
+        try {
+            pays1.setImage(SaveImage.save("regions",file,pays1.getNom()));
+        }
+        catch (Exception e){
+            System.out.println("errer");
+        }
+        return paysService.creer(pays1);
     }
 
 

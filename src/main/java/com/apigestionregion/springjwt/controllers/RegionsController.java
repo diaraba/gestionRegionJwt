@@ -2,14 +2,18 @@ package com.apigestionregion.springjwt.controllers;
 
 import com.apigestionregion.springjwt.models.Regions;
 import com.apigestionregion.springjwt.security.services.RegionsService;
+import com.apigestionregion.springjwt.security.services.SaveImage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
-@RequestMapping("/regions")
+@RequestMapping("/api/auth/regions")
 @AllArgsConstructor
 public class RegionsController {
 
@@ -25,8 +29,23 @@ public class RegionsController {
     /*Permet creer une entrée pour */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public String creer(@RequestBody Regions regions) {
-        regionsService.creer(regions);
+    public String creer(@RequestParam(value = "file",required = false)MultipartFile file,
+                        @RequestParam(value = "regions") String regions) throws JsonProcessingException {
+
+        Regions regions1=null;
+        try{
+            regions1 = new JsonMapper().readValue(regions,Regions.class);
+        }
+        catch (Exception e){
+           System.out.println("ererh");
+        }
+        try {
+            regions1.setImage(SaveImage.save("regions",file,regions1.getNom()));
+        }
+        catch (Exception e){
+            System.out.println("errer");
+        }
+        regionsService.creer(regions1);
 
         return "La population a été ajouté avec succcès";
     }

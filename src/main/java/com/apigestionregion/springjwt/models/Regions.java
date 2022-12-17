@@ -17,6 +17,7 @@ public class Regions {
     private String langue;
     private String superficie_regions;
     private String domaine_activite;
+    private String image;
 
     @ManyToOne
     private Pays pays;
