@@ -1,15 +1,20 @@
 package com.apigestionregion.springjwt.controllers;
 
+import com.apigestionregion.springjwt.models.Pays;
 import com.apigestionregion.springjwt.models.Regions;
+import com.apigestionregion.springjwt.security.services.ConfigImage;
+import com.apigestionregion.springjwt.security.services.PaysService;
 import com.apigestionregion.springjwt.security.services.RegionsService;
-import com.apigestionregion.springjwt.security.services.SaveImage;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
@@ -20,7 +25,8 @@ public class RegionsController {
     @Autowired
     private final RegionsService regionsService;
 
-
+    @Autowired
+    private final PaysService paysService;
 
 
 
@@ -29,11 +35,29 @@ public class RegionsController {
     /*Permet creer une entrée pour */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public String creer(@RequestParam(value = "file",required = false)MultipartFile file,
-                        @RequestParam(value = "regions") String regions) throws JsonProcessingException {
+    public String creer( @Param("code_regions") String code_regions,
+                         @Param("nom") String nom,
+                         @Param("langue") String langue,
+                         @Param("superficie_regions") String superficie_regions,
+                         @Param("domaine_activite") String domaine_activite,
+                         @Param("image")MultipartFile image,
+                         @Param("id_pays") Long id_pays) throws IOException {
 
-        Regions regions1=null;
-        try{
+        Regions regions1=new Regions();
+        regions1.setCodeRegions(code_regions);
+        regions1.setNom(nom);
+        regions1.setLangue(langue);
+        regions1.setSuperficie_regions(superficie_regions);
+        regions1.setDomaine_activite(domaine_activite);
+        String img = StringUtils.cleanPath(image.getOriginalFilename());
+        regions1.setImage(img);
+        String uploaDir = "C:\\Users\\didiarra\\gestionRegionJwt\\src\\main\\resources\\image";
+        ConfigImage.saveimg(uploaDir, img, image);
+        System.out.println(id_pays);
+        Pays pays = paysService.trouverParid(id_pays);
+        System.out.println(pays);
+        regions1.setPays(pays);
+   /*     try{
             regions1 = new JsonMapper().readValue(regions,Regions.class);
         }
         catch (Exception e){
@@ -44,7 +68,7 @@ public class RegionsController {
         }
         catch (Exception e){
             System.out.println("errer");
-        }
+        }*/
         regionsService.creer(regions1);
 
         return "La population a été ajouté avec succcès";

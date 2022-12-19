@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Pays {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idPays;
     private String nom;
     private String image;
 

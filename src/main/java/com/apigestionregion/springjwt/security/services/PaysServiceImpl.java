@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class PaysServiceImpl implements PaysService{
@@ -33,5 +35,10 @@ public class PaysServiceImpl implements PaysService{
     public String supprimer(Long idPays) {/*C'est l'implementation de la méthode permettant de supprimer un pays*/
         paysRepository.deleteById(idPays);
         return "Pays supprimer";
+    }
+
+    @Override
+    public Pays trouverParid(Long idPays) {
+        return paysRepository.findByIdPays(idPays);
     }
 }
