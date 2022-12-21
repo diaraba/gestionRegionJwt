@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Regions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idRegion;
     private String codeRegions;
     private String nom;
     private String langue;
@@ -20,6 +20,7 @@ public class Regions {
     private String image;
 
     @ManyToOne
+    @JoinColumn(name = "regions.id_pays")
     private Pays pays;
 
    /* @ManyToOne

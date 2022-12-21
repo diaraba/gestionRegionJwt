@@ -2,10 +2,13 @@ package com.apigestionregion.springjwt.controllers;
 
 import com.apigestionregion.springjwt.models.Pays;
 import com.apigestionregion.springjwt.models.Regions;
+import com.apigestionregion.springjwt.repository.PaysRepository;
+import com.apigestionregion.springjwt.repository.RegionsRepository;
 import com.apigestionregion.springjwt.security.services.ConfigImage;
 import com.apigestionregion.springjwt.security.services.PaysService;
 import com.apigestionregion.springjwt.security.services.RegionsService;
 import lombok.AllArgsConstructor;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
@@ -27,21 +31,22 @@ public class RegionsController {
 
     @Autowired
     private final PaysService paysService;
-
-
-
+    @Autowired
+    private PaysRepository paysRepository;
+    @Autowired
+    private RegionsRepository regionsRepository;
 
 
     /*Permet creer une entrée pour */
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/create")
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create/{nomPays}")
     public String creer( @Param("code_regions") String code_regions,
                          @Param("nom") String nom,
                          @Param("langue") String langue,
                          @Param("superficie_regions") String superficie_regions,
                          @Param("domaine_activite") String domaine_activite,
                          @Param("image")MultipartFile image,
-                         @Param("id_pays") Long id_pays) throws IOException {
+                         @PathVariable("nomPays") String nomPays) throws IOException {
 
         Regions regions1=new Regions();
         regions1.setCodeRegions(code_regions);
@@ -51,12 +56,15 @@ public class RegionsController {
         regions1.setDomaine_activite(domaine_activite);
         String img = StringUtils.cleanPath(image.getOriginalFilename());
         regions1.setImage(img);
-        String uploaDir = "C:\\Users\\didiarra\\gestionRegionJwt\\src\\main\\resources\\image";
+        String uploaDir = "C:\\Users\\didiarra\\AngularGestionRegion\\jwtangularGestionRegion-main\\src\\assets\\image";
         ConfigImage.saveimg(uploaDir, img, image);
-        System.out.println(id_pays);
-        Pays pays = paysService.trouverParid(id_pays);
-        System.out.println(pays);
-        regions1.setPays(pays);
+        //System.out.println(id_pays);
+
+        //System.out.println(paysService.trouverParid(id_pays));
+        //Pays pays= paysService.trouverParid(id_pays);
+        Pays pay = paysRepository.findByNom(nomPays);
+        regions1.setPays(pay);
+
    /*     try{
             regions1 = new JsonMapper().readValue(regions,Regions.class);
         }
@@ -80,10 +88,10 @@ public class RegionsController {
 
 
     /*Permet d'afficher la liste de toute les regions avec tout les chanmps de notre entités region */
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/read")
-    public Iterable<Object[]> lire() {
-        return regionsService.lire();
+    public List<Regions> lire() {
+        return regionsService.afficher();
     }
 
 
@@ -99,6 +107,10 @@ public class RegionsController {
         return regionsService.lireFIND_REGION_SANS_Pays();
     }
 
+    @GetMapping("/regionParid/{id}")
+    public Regions regionParid(@PathVariable("id") Long id){
+        return  regionsRepository.findByIdRegion(id);
+    }
 
 
 

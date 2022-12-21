@@ -2,6 +2,8 @@ package com.apigestionregion.springjwt.security.services;
 
 import com.apigestionregion.springjwt.models.Regions;
 
+import java.util.List;
+
 public interface RegionsService {
     Regions creer (Regions regions);/*C'est la méthode permettant de creer une region*/
 
@@ -14,5 +16,6 @@ public interface RegionsService {
     Iterable<Object[]>  lireFIND_REGION_POPULATION_ANNEE_NBHABUTANT(String regions);/*C'est la méthode permettant d'afficher une liste contenant le nom de la region,  le nombre d'habitant et l'année correspondant a ce nombre  d'habitant;  d'une region donnée en parametre*/
     Regions modifier(Long idRegions, Regions regions);/*C'est la méthode permettant de modifier une population*/
     String supprimer(Long idRegions);/*C'est la méthode permettant de supprimer une population*/
+    List<Regions> afficher();
 }
 

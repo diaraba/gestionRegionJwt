@@ -12,5 +12,8 @@ public interface PaysService {
     String supprimer(Long idPays);
     /*C'est la méthode permettant de supprimer un pays*/
     Pays trouverParid(Long idPays);
+/*
+    Optional<Pays> findById(Long id);
+*/
 }
 

@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.apigestionregion.springjwt.repository.RegionsRepository;
+import com.apigestionregion.springjwt.security.services.userServiImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.apigestionregion.springjwt.models.ERole;
 import com.apigestionregion.springjwt.models.Role;
@@ -44,14 +42,19 @@ public class AuthController {
   @Autowired
   UserRepository userRepository;
 
+
   @Autowired
   RoleRepository roleRepository;
+  @Autowired
+  userServiImpl userS;
 
   @Autowired
   PasswordEncoder encoder;
 
   @Autowired
   JwtUtils jwtUtils;
+  @Autowired
+  private RegionsRepository regionsRepository;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -76,6 +79,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    System.out.println("################################: " + signUpRequest);
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
           .badRequest()
@@ -128,4 +132,8 @@ public class AuthController {
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
+ @GetMapping("/afficherUser")
+  public List<User> afficherUser(){
+    return userS.afficherUser();
+ }
 }

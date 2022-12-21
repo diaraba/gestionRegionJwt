@@ -3,6 +3,7 @@ package com.apigestionregion.springjwt.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -83,12 +84,18 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
   
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeRequests().antMatchers(HttpMethod.GET,"/user/**").hasAuthority("ADMIN");
+    http.authorizeRequests().antMatchers(HttpMethod.GET,"/user/**").hasAuthority("USER");
+    http.authorizeRequests().antMatchers(HttpMethod.GET,"/admin/**").hasAuthority("ADMIN");
+    http.authorizeRequests().antMatchers(HttpMethod.GET,"/regions/**").hasAuthority("USER");
     http.cors().and().csrf().disable()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+
         .antMatchers("/api/test/**").permitAll()
         .anyRequest().authenticated();
+
 
     http.authenticationProvider(authenticationProvider());
 

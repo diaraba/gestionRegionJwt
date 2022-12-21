@@ -12,6 +12,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PaysServiceImpl implements PaysService{
     private final PaysRepository paysRepository;
+
+    /*public PaysService(PaysRepository paysRepository) {
+        this.paysRepository = paysRepository;
+    }*/
     @Override
     public Pays creer(Pays pays) {
         return paysRepository.save(pays); /*C'est  l'implementation de la méthode permettant de creer un pays*/
@@ -41,4 +45,9 @@ public class PaysServiceImpl implements PaysService{
     public Pays trouverParid(Long idPays) {
         return paysRepository.findByIdPays(idPays);
     }
+
+ /*   @Override
+    public Optional<Pays> findById(Long id) {
+        return paysRepository.findById(id);
+    }*/
 }

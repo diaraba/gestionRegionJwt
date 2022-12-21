@@ -1,23 +1,21 @@
 package com.apigestionregion.springjwt.models;
 
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-/*Là nous avons la classe Pays*/
 @Entity/*Permet de montrer que notre classe qui va suivre est un entité ainsi elle sera créer dans la base de donnée*/
-@Table(name = "Pays")/*Permet de donner un nom a notre table*/
+@Table(name = "Commentaire")/*Permet de donner un nom a notre table*/
 @Getter
 @Setter/*Permet de créer les setters de ma classe  Pays  grace la dependance lombok*/
-public class Pays {
+public class Commentaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPays;
-    private String nom;
-    private String description;
-    private String superficie;
-    private String image;
-
-
+    private String contenu;
+    @ManyToOne
+    User user;
+    @ManyToOne
+    Regions regions;
 }

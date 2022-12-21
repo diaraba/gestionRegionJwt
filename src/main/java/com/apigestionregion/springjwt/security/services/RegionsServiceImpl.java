@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor/*Permet de créer un constructeur avec argument*/
 @Service/*Permet de spécifier que nos méthdes sont des services*/
 public class RegionsServiceImpl implements RegionsService{
@@ -60,5 +62,10 @@ public class RegionsServiceImpl implements RegionsService{
     public String supprimer(Long idRegions) {/*C'est  l'implementation de la méthode supprimer permettant de supprimer une region en spécifiant son id*/
         regionsRepository.deleteById(idRegions);
         return "Regions supprimer";
+    }
+
+    @Override
+    public List<Regions> afficher() {
+        return regionsRepository.findAll();
     }
 }
