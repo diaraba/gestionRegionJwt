@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity/*Permet de montrer que notre classe qui va suivre est un entité ainsi elle sera créer dans la base de donnée*/
 @Table(name = "Commentaire")/*Permet de donner un nom a notre table*/
@@ -12,8 +13,9 @@ import javax.persistence.*;
 public class Commentaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPays;
+    private Long id;
     private String contenu;
+    private Date date;
     @ManyToOne
     User user;
     @ManyToOne

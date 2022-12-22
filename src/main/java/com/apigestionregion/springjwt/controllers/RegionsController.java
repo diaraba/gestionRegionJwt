@@ -1,8 +1,10 @@
 package com.apigestionregion.springjwt.controllers;
 
 import com.apigestionregion.springjwt.models.Pays;
+import com.apigestionregion.springjwt.models.Population;
 import com.apigestionregion.springjwt.models.Regions;
 import com.apigestionregion.springjwt.repository.PaysRepository;
+import com.apigestionregion.springjwt.repository.PopulationRepository;
 import com.apigestionregion.springjwt.repository.RegionsRepository;
 import com.apigestionregion.springjwt.security.services.ConfigImage;
 import com.apigestionregion.springjwt.security.services.PaysService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +38,8 @@ public class RegionsController {
     private PaysRepository paysRepository;
     @Autowired
     private RegionsRepository regionsRepository;
+    @Autowired
+    private PopulationRepository populationRepository;
 
 
     /*Permet creer une entrée pour */
@@ -92,6 +97,19 @@ public class RegionsController {
     @GetMapping("/read")
     public List<Regions> lire() {
         return regionsService.afficher();
+    }
+
+    @GetMapping("/afficherpopulation/{idRg}")
+    public List<Population> afficherPopulation(@PathVariable("idRg")Long idRg){
+        Regions regions1=regionsRepository.findByIdRegion(idRg);
+        List<Population> newPopulation=new ArrayList<>();
+        List<Population> allPopulation=populationRepository.findAll();
+        for(Population p: allPopulation){
+            if (p.getRegions().getIdRegion().equals(regions1.getIdRegion())){
+                newPopulation.add(p);
+            }
+        }
+        return newPopulation;
     }
 
 

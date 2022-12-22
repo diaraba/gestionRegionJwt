@@ -5,6 +5,8 @@ import com.apigestionregion.springjwt.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface RegionsRepository extends JpaRepository<Regions, Long> {
     /*C'est la requette qui permet d'afficher une liste de tout les regions avec le pays correspondant*/
     @Query(value = "SELECT regions.nom , pays.nom as pays FROM regions, pays where regions.id_pays = pays.id", nativeQuery = true )
@@ -22,6 +24,8 @@ public interface RegionsRepository extends JpaRepository<Regions, Long> {
     @Query(value = "SELECT regions.nom, population.annee, population.nb_habitant FROM regions,population WHERE  population.regions_id = regions.id AND regions.nom =:regions", nativeQuery = true )
     public Iterable<Object[]> FIND_REGION_POPULATION_ANNEE_NBHABUTANT(String regions);
     Regions findByIdRegion(Long id);
+
+    Regions findByNom(String nom);
 
 }
 

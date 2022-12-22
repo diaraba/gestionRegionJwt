@@ -1,19 +1,25 @@
 package com.apigestionregion.springjwt.controllers;
 
 import com.apigestionregion.springjwt.models.Population;
+import com.apigestionregion.springjwt.models.Regions;
+import com.apigestionregion.springjwt.repository.RegionsRepository;
 import com.apigestionregion.springjwt.security.services.PopulationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
-@RequestMapping("/population")
+@RequestMapping("/api/auth/population")
 @AllArgsConstructor
 public class PopulationController {
     @Autowired
     private final PopulationService populationService;
+
+    @Autowired
+    private final RegionsRepository regionsRepository;
 
 
 
@@ -21,6 +27,18 @@ public class PopulationController {
     /*LA CREATION D'UNE ENTREE POUR LA POPULATION C'EST A DIRE SON CONTENU*/
     @PostMapping("/create")
     public Population creer(@RequestBody Population population) {
+
+        return populationService.creer(population);
+    }
+    @PostMapping("/creer/{nom}")
+    public Population creer(@Param("annee") String annee, @Param("nbHabitant") Long nbHabitant, @PathVariable("nom") String nom){
+        Population population=new Population();
+        population.setAnnee(annee);
+        population.setNbHabitant(nbHabitant);
+        Regions regions1=new Regions();
+                regions1= regionsRepository.findByNom(nom);
+        System.out.println(regions1);
+        population.setRegions(regions1);
 
         return populationService.creer(population);
     }
